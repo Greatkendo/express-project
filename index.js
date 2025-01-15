@@ -11,13 +11,15 @@ import nodemon from 'nodemon'
 
 // a line of code(middleware) that shows that the website is only open from 9am - 5pm
 const timeRestrictionMiddleware = (req, res, next) => {
- const currentHour = new Date().getHours(); //get the current time and date
+ const currentHour = new Date().getHours(); //get the current hour
+ const openDays = new Date().getDay(); //days of operation
  const openHour = 9; //open hour is 9am mon - fri
  const closeHour = 17; //closing hour is 5pm mon - fri
+ const workDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]; //these are the workdays in an array
 
- //checking if the current time is within the allowed range
- if (currentHour >= openHour && currentHour < closeHour) {
-  next(); //continue to the next middleware
+ //checking if the current time and days is within the allowed range
+ if (workDays.includes(workDays[openDays]) && currentHour >= openHour && currentHour < closeHour) {
+  return next(); //continue to the next middleware
  }else{
   res.status(403).send("The website is only accessible for 9am to 5pm Monday to Friday")
  };
